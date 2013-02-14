@@ -19,22 +19,30 @@ function Boat(options) { //FACTORY OBJECT METHOD TO CREATE A BOAT OBJECT
 	this.color = options.color || "white";
 }
 
+function Bike(options) { //FACTORY OBJECT METHOD TO CREATE A BIKE OBJECT
+	this.gears = options.gears || 12;
+	this.state = options.state || "new";
+	this.color = options.color || "blue";
+}
+
 
 function VehicleFactory() {} //CREATING THE EMPTY CLASS VEHICLEFACTORY
-VehicleFactory.prototype.vehicleClass = Car; //PROTOTYPING THE VEHICLECLASS ATRIBUTE OF THE VEHICLEFACTORY CLASS
-VehicleFactory.prototype.createVehicle = function(options) { //PROTOTYPING THE CREATEVEHICLE ATRIBUTE OF THE VEHICLEFACTORY CLASS TO A FUNCTION THAT RETURN A NEW OBJECT
-	if(options.vehicleType === "car") {
-		this.vehicleClass = Car;
-	} else if(options.vehicleType === "truck") {
-		this.vehicleClass = Truck;
-	} else {
-		this.vehicleClass = Boat;
+VehicleFactory.prototype.createVehicle = function(options) { //PROTOTYPING THE CREATEVEHICLE METHOD OF THE VEHICLEFACTORY CLASS TO A FUNCTION THAT RETURN A NEW OBJECT
+	switch(options.vehicleType) {
+	case 'car':
+		return new Car(options);
+	case 'truck':
+		return new Truck(options);
+	case 'boat':
+		return new Boat(options);
+	case 'bike':
+		return new Bike(options);
+	default:
+		console.log(options.vehicleType + " is not a valid vehicle type.");
 	}
 
-
-	return new this.vehicleClass(options);
-
 };
+
 
 
 //SINGLETON IMPLEMENTATION
@@ -52,7 +60,11 @@ var VehicleSingleton = function() {
 		}
 
 		return instance; //RETURNING EITHER THE NEW OR EXISTING INSTANCE
-	}
+	};
+
+
+//USAGE
+
 var outputFactory = VehicleSingleton(); //CREATING A NEW VEHICLEFACTORY OBJECT - USED FOR VALIDATION OF SINGLETON
 var outputFactory2 = VehicleSingleton(); //USED FOR VALIDATION OF SINGLETON
 var car = outputFactory.createVehicle({
@@ -67,11 +79,33 @@ var boat = outputFactory.createVehicle({
 	state: "used"
 });
 
-console.log(car instanceof Car);
+var bike = outputFactory.createVehicle({
+	vehicleType: "bike",
+	gears: 10,
+	color: "purple"
+	
 
-console.log(boat instanceof Boat);
+});
 
-console.log(outputFactory === outputFactory2);
+var pinkBike = outputFactory.createVehicle({
+	vehicleType: "bIke",
+	gears: 13,
+	color: "pink"
+	
+
+});
+
+console.log(car instanceof Car); //TRUE
+
+console.log(boat instanceof Boat); //TRUE
+
+console.log(bike instanceof Bike); //TRUE
+
+console.log(pinkBike instanceof Bike); //FALSE - wrong vehicle type
+
+console.log((outputFactory === outputFactory2) + " -- SINGLETON success"); //TRUE - The two variables point to the same object in memory.
 
 console.log(car);
 console.log(boat);
+console.log(bike);
+console.log(pinkBike);
