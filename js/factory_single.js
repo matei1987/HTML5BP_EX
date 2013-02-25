@@ -6,6 +6,7 @@ function Create_a(options) { //FACTORY OBJECT METHOD TO CREATE A CAR OBJECT
 	link.id = options.id;
 	link.className = options.className;
 	link.textContent = options.textContent;
+	return (link);
 }
 
 
@@ -15,14 +16,16 @@ function Create_img(options) { //FACTORY OBJECT METHOD TO CREATE A TRUCK OBJECT
 	pic.id = options.id;
 	pic.className = options.className;
 	pic.textContent = options.textContent;
+	return (pic);
 }
 
-function Create_div(options) { //FACTORY OBJECT METHOD TO CREATE A BOAT OBJECT
+function Create_div(options) { 
 	var div = document.createElement('div');
 	div.src = options.src;
 	div.id = options.id;
 	div.className = options.className;
 	div.textContent = options.textContent;
+	return (div);
 }
 
 
@@ -36,7 +39,7 @@ ElementFactory.prototype.createElements = function(options) { //PROTOTYPING THE 
 	case 'div':
 		return new Create_div(options);
 	default:
-		console.log(options.vehicleType + " is not a valid element");
+		console.log(options.elementType + " is not a valid element");
 	}
 
 };
@@ -48,12 +51,12 @@ var instance; //GLOBAL VARIABLE USED TO TRACK INSTANCE
 var ElementFactorySingleton = function() {
 
 
-		function init() { //FUNCTION USED TO INITIALIZE AN INSTANCE OF THE VEHICLE FACTORY
+		function init() { //FUNCTION USED TO INITIALIZE AN INSTANCE 
 			return new ElementFactory();
 
 		}
 
-		if(typeof instance === "undefined") { //CHECKING IF AN OBJECT OF TYPE VEHICLE FACTORY HAS BEEN INSTANTIATED
+		if(typeof instance === "undefined") { //CHECKING IF AN OBJECT OF TYPE Element FACTORY HAS BEEN INSTANTIATED
 			instance = init(); //CALLING INIT() IF NO INSTANCE IS DETECTED
 		}
 
@@ -69,7 +72,8 @@ var a = outputFactory.createElements({
 	elementType: "a",
 	href: "http://www.google.com",
 	id: "goole_link",
-	className: "links"
+	className: "links",
+	textContent: "Check out GOOGLE!!"
 });
 
 var div = outputFactory.createElements({
@@ -84,7 +88,7 @@ var img = outputFactory.createElements({
 	id: "nick_cage",
 	className: "pics",
 	textContent: "The One True God",
-	src: "http://ia.media-imdb.com/images/M/MV5BMTUzMDM4Nzk2MV5BMl5BanBnXkFtZTcwNTcwNjExOQ@@._V1._SY314_CR0,0,214,314_.jpg"
+	src: "http://25.media.tumblr.com/tumblr_lfjfhc40EZ1qb6rl5o1_500.jpg"
 
 });
 
@@ -108,6 +112,9 @@ console.log(img_misspelled instanceof Create_img); //FALSE - wrong vehicle type
 console.log((outputFactory === outputFactory2) + " -- SINGLETON success"); //TRUE - The two variables point to the same object in memory.
 
 console.log(a);
+document.body.appendChild(a);
 console.log(div);
+document.body.appendChild(div);
 console.log(img);
+document.body.appendChild(img);
 console.log(img_misspelled);
